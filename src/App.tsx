@@ -48,7 +48,13 @@ export default function App() {
   }, [theme, setTheme]);
 
   // ── display / app mode ────────────────────────────────────────────────
-  const [displayMode, setDisplayMode] = useState<DisplayMode>('standard');
+  const [displayMode, setDisplayMode] = useState<DisplayMode>(
+    () => (localStorage.getItem('sudoku-display-mode') as DisplayMode) ?? 'standard'
+  );
+  const handleDisplayModeChange = (m: DisplayMode) => {
+    setDisplayMode(m);
+    localStorage.setItem('sudoku-display-mode', m);
+  };
   const [appMode,     setAppMode]     = useState<'play' | 'create'>('play');
 
   // ── modals ────────────────────────────────────────────────────────────
@@ -406,7 +412,7 @@ export default function App() {
           displayMode={displayMode}
           theme={theme}
           onLangChange={setLang}
-          onModeChange={setDisplayMode}
+          onModeChange={handleDisplayModeChange}
           onCycleTheme={cycleTheme}
           onClose={() => setShowSettings(false)}
         />
