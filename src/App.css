@@ -1,0 +1,526 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   APP LAYOUT
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0 24px;
+  min-height: 100svh;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 4px;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-title {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0;
+  color: var(--text);
+}
+
+/* ── Icon button (header) ───────────────────────────────────────────────── */
+.icon-btn {
+  min-width: 40px;
+  min-height: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+@media (hover: hover) { .icon-btn:hover { border-color: var(--accent); } }
+
+/* ── Mode tabs (Play / Create) ──────────────────────────────────────────── */
+.mode-tabs {
+  display: flex;
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.tab-btn {
+  flex: 1;
+  min-height: 38px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tab-btn--active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── Hint ───────────────────────────────────────────────────────────────── */
+.hint {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 16px 0;
+}
+
+/* ── Game info bar (timer only) ─────────────────────────────────────────── */
+.game-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.timer-display {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+/* ── Board ──────────────────────────────────────────────────────────────── */
+.board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  border-radius: 6px;
+  overflow: hidden;
+  /* inset box-shadow for the outer border — does NOT reduce content area,    */
+  /* so the grid never overflows the clipping boundary by a subpixel amount  */
+  box-shadow: inset 0 0 0 2.5px var(--text), var(--shadow);
+  width: min(460px, calc(100vw - 24px));
+  aspect-ratio: 1;
+  touch-action: manipulation;
+}
+
+/* ── Cell ───────────────────────────────────────────────────────────────── */
+.cell {
+  all: unset;
+  box-sizing: border-box; /* restore after all:unset — borders stay inside cell */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  font-size: clamp(0.75rem, 3.8vw, 1.3rem);
+  font-weight: 500;
+  cursor: pointer;
+  border: 0.5px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  transition: background 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  &:nth-child(3n)  { border-right: 2px solid var(--text); }
+  &:nth-child(9n)  { border-right: none; }
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--text); }
+
+.cell--given       { color: var(--given); font-weight: 700; cursor: default; }
+.cell--selected    { background: var(--accent); color: #fff !important; }
+.cell--highlighted { background: var(--highlight); }
+.cell--same-number { background: var(--same-number, var(--highlight)); }
+.cell--error       { color: var(--error) !important; }
+
+/* ── Notes grid ─────────────────────────────────────────────────────────── */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+  font-size: clamp(0.3rem, 1.5vw, 0.55rem);
+  line-height: 1;
+}
+
+.note-num          { display: flex; align-items: center; justify-content: center; color: var(--text-muted); opacity: 0; }
+.note-num--visible { opacity: 1; }
+
+/* ── Words mode: rectangular cells ─────────────────────────────────────── */
+/* Board is wider than normal (540px vs 460px) so each of the 9 cells gets  */
+/* ~60px width — enough for a 5-char Syriac word at a readable font size.   */
+.board--words {
+  aspect-ratio: auto;
+  width: min(540px, calc(100vw - 16px));   /* wider than the 460px default  */
+  box-shadow: inset 0 0 0 2.5px var(--text), var(--shadow);
+}
+.board--words .cell {
+  aspect-ratio: auto;
+  height: 50px;
+  /* font math: 5 chars × font × 0.58em ≤ cell_width (540/9 = 60px)        */
+  /* → font ≤ 60 / (5 × 0.58) = 20.7px ≈ 1.3rem  ✓                        */
+  /* On small phones (320px): cell ≈ 34px → clamp floor kicks in            */
+  font-size: clamp(0.78rem, 3.6vw, 1.3rem);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* ── Number pad ─────────────────────────────────────────────────────────── */
+.number-pad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  width: min(460px, calc(100vw - 24px));
+}
+
+.pad-btn {
+  min-height: 52px;
+  padding: 8px 4px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: clamp(0.85rem, 3.8vw, 1.2rem);
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (hover: hover) { .pad-btn:hover { border-color: var(--accent); } }
+
+.pad-btn--active       { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pad-btn--erase        { color: var(--error); border-color: var(--error); }
+.pad-btn--erase.pad-btn--active { background: var(--error); color: #fff; }
+.pad-btn--dimmed       { opacity: 0.3; pointer-events: none; }
+.pad-btn--notes-active { border-color: #10b981; color: #10b981; }
+.pad-btn-content       { display: inline-flex; align-items: center; gap: 2px; }
+.badge                 { font-size: 0.5rem; padding: 1px 3px; background: var(--accent); color: #fff; border-radius: 999px; margin-inline-start: 2px; vertical-align: top; line-height: 1.4; }
+.pad-btn--active .badge { background: rgba(255,255,255,0.35); }
+
+/* words mode pad */
+.pad-btn--words          { font-size: clamp(0.95rem, 3.3vw, 1.35rem); text-overflow: clip; min-height: 56px; padding: 6px 4px; }
+.number-pad--words       { width: min(540px, calc(100vw - 16px)); }  /* match wider board */
+.pad-btn-words-inner     { display: flex; flex-direction: column; align-items: center; gap: 2px; line-height: 1.1; }
+.pad-btn-word            { display: block; text-align: center; }
+.badge--below            { font-size: 0.5rem; padding: 1px 3px; background: var(--accent); color: #fff; border-radius: 999px; line-height: 1; }
+.pad-btn--active .badge--below { background: rgba(255,255,255,0.35); }
+
+/* ── Bottom action bar ──────────────────────────────────────────────────── */
+.bottom-bar {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  width: min(460px, calc(100vw - 24px));
+  padding-top: 4px;
+  border-top: 1.5px solid var(--border);
+}
+
+.bar-btn {
+  flex: 1;
+  min-height: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  box-shadow: var(--shadow);
+  padding: 6px 4px;
+}
+@media (hover: hover) { .bar-btn:hover { border-color: var(--accent); } }
+
+.bar-btn:disabled { opacity: 0.3; pointer-events: none; }
+
+.bar-btn-icon  { font-size: 1.2rem; line-height: 1; }
+.bar-btn-label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); white-space: nowrap; }
+
+.bar-btn--primary {
+  flex: 1.6;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.bar-btn--primary .bar-btn-label { color: rgba(255,255,255,0.8); }
+
+.bar-btn--start {
+  flex: 1;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  min-height: 54px;
+}
+.bar-btn--start .bar-btn-label { color: rgba(255,255,255,0.85); font-size: 0.75rem; }
+
+/* ── Modal overlay ──────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 300;
+  animation: fadeIn 0.2s ease;
+  padding: 0;
+}
+
+.modal {
+  position: relative;
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  width: 100%;
+  max-width: 520px;
+  animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 90svh;
+  overflow-y: auto;
+}
+
+/* On desktop: centered dialog */
+@media (min-width: 560px) {
+  .modal-overlay { align-items: center; }
+  .modal {
+    border-radius: 16px;
+    max-width: 400px;
+    padding: 24px;
+    animation: scaleIn 0.22s ease;
+  }
+}
+
+@keyframes slideUp  { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes scaleIn  { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ── Difficulty cards (New Game modal) ──────────────────────────────────── */
+.diff-cards { display: flex; flex-direction: column; gap: 10px; }
+
+.diff-card {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 2px solid var(--diff-color, var(--border));
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: var(--shadow);
+}
+@media (hover: hover) {
+  .diff-card:hover { background: var(--highlight); }
+}
+.diff-card:active { transform: scale(0.98); }
+
+.diff-card-top  { display: flex; align-items: center; gap: 10px; }
+.diff-card-emoji { font-size: 1.3rem; line-height: 1; }
+.diff-card-name  { font-size: 1rem; font-weight: 700; color: var(--text); }
+.diff-card-desc  { font-size: 0.8rem; color: var(--text-muted); padding-inline-start: 34px; }
+
+/* ── Settings modal content ─────────────────────────────────────────────── */
+.settings-groups { display: flex; flex-direction: column; gap: 20px; }
+
+.settings-group  { display: flex; flex-direction: column; gap: 8px; }
+
+.settings-label  {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.mode-selector { display: flex; gap: 6px; flex-wrap: wrap; }
+.mode-btn {
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+@media (hover: hover) { .mode-btn:hover { border-color: var(--accent); } }
+.mode-btn--active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.mode-btn--sm     { padding: 4px 10px; font-size: 0.8rem; min-height: 36px; }
+.lang-selector    { gap: 4px; }
+
+.theme-row-btn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (hover: hover) { .theme-row-btn:hover { border-color: var(--accent); } }
+.theme-row-icon  { font-size: 1.3rem; }
+.theme-row-label { flex: 1; font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.theme-row-next  { font-size: 0.85rem; color: var(--text-muted); }
+
+/* ── Creator panel ──────────────────────────────────────────────────────── */
+.creator-layout { display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center; }
+.creator-difficulty { width: min(460px, calc(100vw - 24px)); }
+.creator-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  width: min(460px, calc(100vw - 24px));
+}
+
+/* ── Toast ──────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+  z-index: 1000;
+  white-space: nowrap;
+}
+.toast--visible { opacity: 1; }
+
+/* ── Win overlay ────────────────────────────────────────────────────────── */
+.win-screen {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+.win-panel {
+  position: relative;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  display: flex; flex-direction: column; gap: 14px;
+  max-width: 320px; width: 88%;
+  animation: scaleIn 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.win-title { font-size: 2rem; margin: 0; }
+.win-stats { display: flex; flex-direction: column; gap: 4px; color: var(--text-muted); }
+
+/* ── Confetti ───────────────────────────────────────────────────────────── */
+.confetti-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px;
+  top: -10px;
+  left: calc(var(--ci, 0) * 4.16%);
+  border-radius: 2px;
+  animation: confettiFall calc(1.5s + var(--ci, 0) * 0.1s) ease-in forwards;
+  animation-delay: calc(var(--ci, 0) * 0.08s);
+  background: hsl(calc(var(--ci, 0) * 15deg), 80%, 55%);
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── Generate / primary button (used in Win screen) ─────────────────────── */
+.generate-btn {
+  min-height: 48px; width: 100%;
+  border: none; border-radius: 10px;
+  background: var(--accent); color: #fff;
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--shadow);
+  transition: opacity 0.15s, transform 0.1s;
+  display: block;
+}
+@media (hover: hover) { .generate-btn:hover { opacity: 0.9; } }
+.generate-btn:active { transform: scale(0.97); }
+.generate-btn--secondary {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}

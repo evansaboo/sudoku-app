@@ -1,0 +1,167 @@
+import { useState, useCallback } from 'react';
+import type { DisplayMode } from '../constants/numberMappings';
+import type { Lang } from '../constants/i18n';
+import { translations } from '../constants/i18n';
+import type { Difficulty, PuzzleResult } from '../utils/sudokuGenerator';
+import { generatePuzzle, countSolutions, solvePuzzle } from '../utils/sudokuGenerator';
+import { encodePuzzle } from '../utils/puzzleEncoding';
+import SudokuBoard from './SudokuBoard';
+import NumberPad from './NumberPad';
+import DifficultySelector from './DifficultySelector';
+
+interface CreatorPanelProps {
+  mode: DisplayMode;
+  lang: Lang;
+  onPlay: (result: PuzzleResult) => void;
+  onToast: (msg: string) => void;
+}
+
+const EMPTY_GRID = new Array<number>(81).fill(0);
+const EMPTY_NOTES: Set<number>[] = Array.from({ length: 81 }, () => new Set<number>());
+
+function hasConflicts(grid: number[]): boolean {
+  for (let i = 0; i < 81; i++) {
+    const val = grid[i];
+    if (!val) continue;
+    const row = Math.floor(i / 9);
+    const col = i % 9;
+    const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+    for (let j = i + 1; j < 81; j++) {
+      if (grid[j] !== val) continue;
+      const jRow = Math.floor(j / 9);
+      const jCol = j % 9;
+      const jBox = Math.floor(jRow / 3) * 3 + Math.floor(jCol / 3);
+      if (jRow === row || jCol === col || jBox === box) return true;
+    }
+  }
+  return false;
+}
+
+export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPanelProps) {
+  const t = translations[lang];
+  const [grid, setGrid] = useState<number[]>(EMPTY_GRID);
+  const [selectedCell, setSelectedCell] = useState<number | null>(null);
+  const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
+  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isValid, setIsValid] = useState<boolean | null>(null);
+
+  const givens = grid.map(() => false);
+
+  const remaining: Record<number, number> = {};
+  for (let n = 1; n <= 9; n++) {
+    remaining[n] = Math.max(0, 9 - grid.filter(v => v === n).length);
+  }
+
+  const handleCellClick = useCallback((idx: number) => {
+    setSelectedCell(prev => prev === idx ? null : idx);
+    if (selectedNumber !== null) {
+      setGrid(prev => {
+        const next = [...prev];
+        next[idx] = selectedNumber === 0 ? 0 : selectedNumber;
+        return next;
+      });
+      setIsValid(null);
+    }
+  }, [selectedNumber]);
+
+  const handleNumberSelect = useCallback((n: number | null) => {
+    setSelectedNumber(n);
+    if (selectedCell !== null && n !== null) {
+      setGrid(prev => {
+        const next = [...prev];
+        next[selectedCell] = n === 0 ? 0 : n;
+        return next;
+      });
+      setIsValid(null);
+    }
+  }, [selectedCell]);
+
+  const handleValidate = () => {
+    if (hasConflicts(grid)) {
+      onToast(t.invalidPuzzle);
+      setIsValid(false);
+      return;
+    }
+    const test = [...grid];
+    const sols = countSolutions(test);
+    if (sols === 1) {
+      onToast(t.validPuzzle);
+      setIsValid(true);
+    } else if (sols === 0) {
+      onToast(t.invalidPuzzle);
+      setIsValid(false);
+    } else {
+      onToast(t.noUniqueSolution);
+      setIsValid(false);
+    }
+  };
+
+  const handleGenerate = () => {
+    setIsGenerating(true);
+    setTimeout(() => {
+      const result = generatePuzzle(difficulty);
+      setGrid(result.puzzle);
+      setIsGenerating(false);
+      setIsValid(null);
+      setSelectedCell(null);
+      setSelectedNumber(null);
+    }, 10);
+  };
+
+  const handleShare = () => {
+    const encoded = encodePuzzle(grid);
+    const url = `${window.location.origin}${window.location.pathname}?p=${encoded}`;
+    navigator.clipboard.writeText(url).then(() => onToast(t.linkCopied));
+  };
+
+  const handlePlay = () => {
+    const sol = solvePuzzle(grid);
+    if (sol) {
+      onPlay({ puzzle: grid, solution: sol });
+    } else {
+      onToast(t.invalidPuzzle);
+    }
+  };
+
+  return (
+    <div className="creator-layout">
+      <SudokuBoard
+        puzzle={grid}
+        givens={givens}
+        userGrid={grid}
+        solution={null}
+        selectedCell={selectedCell}
+        selectedNumber={selectedNumber}
+        mode={mode}
+        notesGrid={EMPTY_NOTES}
+        checkedErrors={new Set<number>()}
+        onCellClick={handleCellClick}
+        allEditable={true}
+      />
+
+      <NumberPad
+        mode={mode}
+        selectedNumber={selectedNumber}
+        remaining={remaining}
+        notesMode={false}
+        showNotesToggle={false}
+        onSelect={handleNumberSelect}
+        onToggleNotes={() => {}}
+      />
+
+      <div className="creator-difficulty">
+        <DifficultySelector difficulty={difficulty} onChange={setDifficulty} lang={lang} />
+      </div>
+
+      <div className="creator-actions">
+        <button className="mode-btn" onClick={handleGenerate} disabled={isGenerating}>
+          {isGenerating ? t.generating : t.newGame}
+        </button>
+        <button className="mode-btn" onClick={handleValidate}>{t.validate}</button>
+        <button className="mode-btn" onClick={handleShare} disabled={!isValid}>{t.shareBtn}</button>
+        <button className="mode-btn mode-btn--active" onClick={handlePlay}>{t.playMode}</button>
+      </div>
+    </div>
+  );
+}
