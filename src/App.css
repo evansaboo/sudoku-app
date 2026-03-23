@@ -393,7 +393,7 @@
   margin: 0;
 }
 
-.mode-selector { display: flex; gap: 6px; flex-wrap: wrap; }
+.mode-selector { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
 .mode-btn {
   min-height: 40px;
   padding: 6px 14px;
