@@ -115,7 +115,13 @@ export default function App() {
 
   // ── URL load on mount ─────────────────────────────────────────────────
   useEffect(() => {
-    const p = new URLSearchParams(window.location.search).get('p');
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get('p');
+    const m = params.get('m') as DisplayMode | null;
+    if (m && ['standard','arabic','syriac','words'].includes(m)) {
+      setDisplayMode(m);
+      localStorage.setItem('sudoku-display-mode', m);
+    }
     if (!p) return;
     const decoded = decodePuzzle(p);
     if (!decoded) return;

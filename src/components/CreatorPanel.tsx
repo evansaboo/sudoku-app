@@ -107,7 +107,7 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
     if (sols === 0) { onToast(t.invalidPuzzle); return; }
     if (sols > 1)   { onToast(t.noUniqueSolution); return; }
     const encoded = encodePuzzle(grid);
-    const url = `${window.location.origin}${window.location.pathname}?p=${encoded}`;
+    const url = `${window.location.origin}${window.location.pathname}?p=${encoded}&m=${mode}`;
     navigator.clipboard.writeText(url).then(() => onToast(t.linkCopied));
   };
 
