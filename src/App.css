@@ -145,8 +145,8 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 
-  &:nth-child(3n)  { border-right: 2px solid var(--text); }
-  &:nth-child(9n)  { border-right: none; }
+  &:nth-child(3n)  { border-inline-end: 2px solid var(--text); }
+  &:nth-child(9n)  { border-inline-end: none; }
 }
 
 .cell:nth-child(n+19):nth-child(-n+27),
