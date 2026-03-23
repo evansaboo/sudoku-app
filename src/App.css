@@ -352,7 +352,7 @@
 }
 
 /* ── Difficulty cards (New Game modal) ──────────────────────────────────── */
-.diff-cards { display: flex; flex-direction: column; gap: 10px; }
+.diff-cards { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 
 .diff-card {
   all: unset;
