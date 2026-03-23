@@ -44,7 +44,6 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isValid, setIsValid] = useState<boolean | null>(null);
 
   const givens = grid.map(() => false);
 
@@ -61,7 +60,6 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
         next[idx] = selectedNumber === 0 ? 0 : selectedNumber;
         return next;
       });
-      setIsValid(null);
     }
   }, [selectedNumber]);
 
@@ -73,27 +71,22 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
         next[selectedCell] = n === 0 ? 0 : n;
         return next;
       });
-      setIsValid(null);
     }
   }, [selectedCell]);
 
   const handleValidate = () => {
     if (hasConflicts(grid)) {
       onToast(t.invalidPuzzle);
-      setIsValid(false);
       return;
     }
     const test = [...grid];
     const sols = countSolutions(test);
     if (sols === 1) {
       onToast(t.validPuzzle);
-      setIsValid(true);
     } else if (sols === 0) {
       onToast(t.invalidPuzzle);
-      setIsValid(false);
     } else {
       onToast(t.noUniqueSolution);
-      setIsValid(false);
     }
   };
 
@@ -103,13 +96,16 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
       const result = generatePuzzle(difficulty);
       setGrid(result.puzzle);
       setIsGenerating(false);
-      setIsValid(null);
       setSelectedCell(null);
       setSelectedNumber(null);
     }, 10);
   };
 
   const handleShare = () => {
+    if (hasConflicts(grid)) { onToast(t.invalidPuzzle); return; }
+    const sols = countSolutions([...grid]);
+    if (sols === 0) { onToast(t.invalidPuzzle); return; }
+    if (sols > 1)   { onToast(t.noUniqueSolution); return; }
     const encoded = encodePuzzle(grid);
     const url = `${window.location.origin}${window.location.pathname}?p=${encoded}`;
     navigator.clipboard.writeText(url).then(() => onToast(t.linkCopied));
@@ -159,7 +155,7 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
           {isGenerating ? t.generating : t.newGame}
         </button>
         <button className="mode-btn" onClick={handleValidate}>{t.validate}</button>
-        <button className="mode-btn" onClick={handleShare} disabled={!isValid}>{t.shareBtn}</button>
+        <button className="mode-btn" onClick={handleShare}>{t.shareBtn}</button>
         <button className="mode-btn mode-btn--active" onClick={handlePlay}>{t.playMode}</button>
       </div>
     </div>
