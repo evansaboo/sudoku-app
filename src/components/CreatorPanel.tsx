@@ -53,24 +53,23 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
   }
 
   const handleCellClick = useCallback((idx: number) => {
-    setSelectedCell(prev => prev === idx ? null : idx);
     if (selectedNumber !== null) {
-      setGrid(prev => {
-        const next = [...prev];
-        next[idx] = selectedNumber === 0 ? 0 : selectedNumber;
-        return next;
-      });
+      setGrid(prev => { const next = [...prev]; next[idx] = selectedNumber; return next; });
+      setSelectedCell(idx);
+      setSelectedNumber(null);
+    } else {
+      setSelectedCell(prev => prev === idx ? null : idx);
     }
   }, [selectedNumber]);
 
   const handleNumberSelect = useCallback((n: number | null) => {
-    setSelectedNumber(n);
-    if (selectedCell !== null && n !== null) {
-      setGrid(prev => {
-        const next = [...prev];
-        next[selectedCell] = n === 0 ? 0 : n;
-        return next;
-      });
+    if (n === null) { setSelectedNumber(null); return; }
+    if (selectedCell !== null) {
+      setGrid(prev => { const next = [...prev]; next[selectedCell] = n; return next; });
+      setSelectedNumber(null);
+      // keep cell selected
+    } else {
+      setSelectedNumber(n);
     }
   }, [selectedCell]);
 

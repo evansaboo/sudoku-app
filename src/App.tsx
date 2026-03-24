@@ -168,13 +168,28 @@ export default function App() {
   }, []);
 
   const handleCellClick = useCallback((idx: number) => {
-    setSelectedCell((prev) => (prev === idx ? null : idx));
-    if (selectedNumber !== null) applyFill(idx, selectedNumber);
+    if (selectedNumber !== null) {
+      // Number already chosen — fill and clear number selection
+      applyFill(idx, selectedNumber);
+      setSelectedCell(idx);
+      if (!notesModeRef.current) setSelectedNumber(null);
+    } else {
+      // No number — just move cell selection (toggle off if same)
+      setSelectedCell((prev) => (prev === idx ? null : idx));
+    }
   }, [selectedNumber, applyFill]);
 
   const handleNumberSelect = useCallback((n: number | null) => {
-    setSelectedNumber(n);
-    if (selectedCell !== null && n !== null) applyFill(selectedCell, n);
+    if (n === null) { setSelectedNumber(null); return; }
+    if (selectedCell !== null) {
+      // Cell already chosen — fill and clear number selection
+      applyFill(selectedCell, n);
+      if (!notesModeRef.current) setSelectedNumber(null);
+      // keep cell selected for easy next move
+    } else {
+      // No cell yet — arm the number
+      setSelectedNumber(n);
+    }
   }, [selectedCell, applyFill]);
 
   const handleUndo = useCallback(() => {
