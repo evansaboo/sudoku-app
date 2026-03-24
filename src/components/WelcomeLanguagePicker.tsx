@@ -6,7 +6,7 @@ interface Props {
 
 const LANGS: { id: Lang; label: string; native: string; flag: string }[] = [
   { id: 'en', label: 'English',  native: 'English', flag: '🇬🇧' },
-  { id: 'ar', label: 'Arabic',   native: 'العربية', flag: '🇸🇦' },
+  { id: 'ar', label: 'Arabic',   native: 'العربية', flag: '🇮🇶' },
   { id: 'sv', label: 'Swedish',  native: 'Svenska',  flag: '🇸🇪' },
 ];
 
