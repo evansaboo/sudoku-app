@@ -524,3 +524,40 @@
   border: 2px solid var(--accent);
   color: var(--accent);
 }
+
+/* ── Welcome language picker (first visit) ──────────────────────────────── */
+.welcome-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.3s ease;
+}
+.welcome-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; max-width: 340px; width: 100%;
+  text-align: center;
+}
+.welcome-icon  { font-size: 3rem; line-height: 1; }
+.welcome-title { font-size: 2rem; font-weight: 800; margin: 0; color: var(--text); }
+.welcome-subtitle { font-size: 1rem; color: var(--text-muted); margin: 0 0 8px; }
+.welcome-langs { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.welcome-lang-btn {
+  all: unset;
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  cursor: pointer; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, background 0.15s;
+  box-sizing: border-box;
+}
+@media (hover: hover) {
+  .welcome-lang-btn:hover { border-color: var(--accent); background: var(--highlight); }
+}
+.welcome-lang-btn:active { transform: scale(0.98); }
+.welcome-lang-flag   { font-size: 1.8rem; line-height: 1; }
+.welcome-lang-native { font-size: 1.1rem; font-weight: 600; color: var(--text); }

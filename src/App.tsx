@@ -15,6 +15,7 @@ import Toast from './components/Toast';
 import CreatorPanel from './components/CreatorPanel';
 import NewGameModal from './components/NewGameModal';
 import SettingsModal from './components/SettingsModal';
+import WelcomeLanguagePicker from './components/WelcomeLanguagePicker';
 
 import './App.css';
 
@@ -33,11 +34,20 @@ export default function App() {
   const [lang, setLangState] = useState<Lang>(() =>
     (localStorage.getItem('sudoku-lang') as Lang) ?? 'en'
   );
+  // Show welcome picker only if no lang has ever been saved
+  const [showWelcome, setShowWelcome] = useState(() => !localStorage.getItem('sudoku-lang'));
+
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     localStorage.setItem('sudoku-lang', l);
     document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
   }, []);
+
+  const handleWelcomeLang = useCallback((l: Lang) => {
+    setLang(l);
+    setShowWelcome(false);
+  }, [setLang]);
+
   useEffect(() => { document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'; }, []); // eslint-disable-line
 
   // ── theme ─────────────────────────────────────────────────────────────
@@ -264,6 +274,7 @@ export default function App() {
   // ── render ────────────────────────────────────────────────────────────
   return (
     <div className="app">
+      {showWelcome && <WelcomeLanguagePicker onSelect={handleWelcomeLang} />}
       {/* ── Header ───────────────────────────────────────────────────── */}
       <header className="header">
         <h1 className="app-title">{t.title}</h1>
