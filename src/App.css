@@ -140,7 +140,7 @@
   border: 0.5px solid var(--border);
   background: var(--surface);
   color: var(--accent);
-  transition: background 0.1s;
+  transition: color 0.1s;   /* background intentionally instant — no flicker */
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
