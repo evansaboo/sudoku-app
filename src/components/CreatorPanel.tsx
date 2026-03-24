@@ -8,6 +8,7 @@ import { encodePuzzle } from '../utils/puzzleEncoding';
 import SudokuBoard from './SudokuBoard';
 import NumberPad from './NumberPad';
 import DifficultySelector from './DifficultySelector';
+import CreatorGuide from './CreatorGuide';
 
 interface CreatorPanelProps {
   mode: DisplayMode;
@@ -44,6 +45,15 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showGuide, setShowGuide] = useState(
+    () => !localStorage.getItem('sudoku-creator-guide-seen')
+  );
+
+  const openGuide = () => setShowGuide(true);
+  const closeGuide = () => {
+    localStorage.setItem('sudoku-creator-guide-seen', '1');
+    setShowGuide(false);
+  };
 
   const givens = grid.map(() => false);
 
@@ -121,6 +131,8 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
 
   return (
     <div className="creator-layout">
+      {showGuide && <CreatorGuide lang={lang} onClose={closeGuide} />}
+
       <SudokuBoard
         puzzle={grid}
         givens={givens}
@@ -157,6 +169,10 @@ export default function CreatorPanel({ mode, lang, onPlay, onToast }: CreatorPan
         <button className="mode-btn" onClick={handleShare}>{t.shareBtn}</button>
         <button className="mode-btn mode-btn--active" onClick={handlePlay}>{t.playMode}</button>
       </div>
+
+      <button className="creator-guide-help-btn" onClick={openGuide}>
+        ❓ {t.creatorGuideBtn}
+      </button>
     </div>
   );
 }

@@ -40,6 +40,21 @@ export interface Translations {
   pen: string;
   check: string;
   share: string;
+  // Creator guide
+  creatorGuideTitle: string;
+  creatorGuideIntro: string;
+  creatorGuideStep1Title: string;
+  creatorGuideStep1Desc: string;
+  creatorGuideStep2Title: string;
+  creatorGuideStep2Desc: string;
+  creatorGuideStep3Title: string;
+  creatorGuideStep3Desc: string;
+  creatorGuideStep4Title: string;
+  creatorGuideStep4Desc: string;
+  creatorGuideStep5Title: string;
+  creatorGuideStep5Desc: string;
+  creatorGuideDone: string;
+  creatorGuideBtn: string;
 }
 
 export const translations: Record<Lang, Translations> = {
@@ -83,6 +98,20 @@ export const translations: Record<Lang, Translations> = {
     pen: 'Pen',
     check: 'Check',
     share: 'Share',
+    creatorGuideTitle: 'How to Create a Puzzle',
+    creatorGuideIntro: 'Build your own Sudoku and share it with friends!',
+    creatorGuideStep1Title: 'Fill cells manually',
+    creatorGuideStep1Desc: 'Tap a number on the pad, then tap a cell to place it — or tap a cell first, then a number. The number clears after each placement.',
+    creatorGuideStep2Title: 'Generate a puzzle',
+    creatorGuideStep2Desc: 'Pick a difficulty (Easy / Medium / Hard) and tap Generate to auto-fill a valid puzzle as your starting point.',
+    creatorGuideStep3Title: 'Clear a cell',
+    creatorGuideStep3Desc: 'Tap the ✕ (erase) button on the number pad, then tap the cell you want to clear.',
+    creatorGuideStep4Title: 'Validate',
+    creatorGuideStep4Desc: 'Tap Validate to check your puzzle has no conflicts and has exactly one unique solution. Fix any issues before sharing.',
+    creatorGuideStep5Title: 'Share & Play',
+    creatorGuideStep5Desc: 'Tap Share to copy a link — anyone who opens it jumps straight into solving your puzzle. Tap Play to solve it yourself!',
+    creatorGuideDone: 'Got it!',
+    creatorGuideBtn: 'How to create?',
   },
   ar: {
     title: 'سودوكو',
@@ -124,6 +153,20 @@ export const translations: Record<Lang, Translations> = {
     pen: 'قلم',
     check: 'تحقق',
     share: 'شارك',
+    creatorGuideTitle: 'كيف تصنع لغز؟',
+    creatorGuideIntro: 'اصنع سودوكو خاص بيك وشاركه مع أصحابك!',
+    creatorGuideStep1Title: 'اكتب الأرقام يدوياً',
+    creatorGuideStep1Desc: 'اختار رقم من اللوحة بعدين اضغط على الخانة — أو اضغط الخانة أول ثم الرقم. الرقم يمسح بعد كل ما تحط.',
+    creatorGuideStep2Title: 'ولّد لغز تلقائي',
+    creatorGuideStep2Desc: 'اختار صعوبة (سهل / وسط / صعب) واضغط توليد يجيبلك لغز جاهز تبدأ منه.',
+    creatorGuideStep3Title: 'امسح خانة',
+    creatorGuideStep3Desc: 'اضغط زر ✕ (مسح) من اللوحة ثم اضغط الخانة الي تريد تمسحها.',
+    creatorGuideStep4Title: 'تحقق',
+    creatorGuideStep4Desc: 'اضغط تحقق تشوف اللغز ما عنده تعارضات وعنده حل واحد بس. صلح أي مشكلة قبل ما تشارك.',
+    creatorGuideStep5Title: 'شارك وإلعب',
+    creatorGuideStep5Desc: 'اضغط شارك تنكوبي الرابط — أي واحد يفتحه يبدأ يحل لغزك. اضغط إلعب إذا تريد تحله بنفسك!',
+    creatorGuideDone: 'فهمت!',
+    creatorGuideBtn: 'كيف أصنع؟',
   },
   sv: {
     title: 'Sudoku',
@@ -165,5 +208,19 @@ export const translations: Record<Lang, Translations> = {
     pen: 'Penna',
     check: 'Kontrollera',
     share: 'Dela',
+    creatorGuideTitle: 'Hur skapar man ett pussel?',
+    creatorGuideIntro: 'Bygg ett eget Sudoku och dela det med vänner!',
+    creatorGuideStep1Title: 'Fyll celler manuellt',
+    creatorGuideStep1Desc: 'Tryck på ett tal i panelen, sedan en cell — eller tryck cellen först och sedan talet. Talet rensas efter varje placering.',
+    creatorGuideStep2Title: 'Generera ett pussel',
+    creatorGuideStep2Desc: 'Välj svårighetsgrad (Lätt / Medel / Svårt) och tryck Generera för ett färdigt pussel att utgå från.',
+    creatorGuideStep3Title: 'Rensa en cell',
+    creatorGuideStep3Desc: 'Tryck på ✕ (radera) i panelen och sedan på cellen du vill rensa.',
+    creatorGuideStep4Title: 'Validera',
+    creatorGuideStep4Desc: 'Tryck Validera för att kontrollera att pusslet saknar konflikter och har exakt en unik lösning.',
+    creatorGuideStep5Title: 'Dela & Spela',
+    creatorGuideStep5Desc: 'Tryck Dela för att kopiera länken — den som öppnar den börjar direkt lösa ditt pussel. Tryck Spela för att lösa det själv!',
+    creatorGuideDone: 'Fattat!',
+    creatorGuideBtn: 'Hur skapar man?',
   },
 };

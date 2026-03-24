@@ -561,3 +561,37 @@
 .welcome-lang-btn:active { transform: scale(0.98); }
 .welcome-lang-flag   { font-size: 1.8rem; line-height: 1; }
 .welcome-lang-native { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+
+/* ── Creator guide modal ────────────────────────────────────────────────── */
+.creator-guide-modal  { max-width: 440px; }
+.creator-guide-intro  { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 16px; }
+.creator-guide-steps  {
+  list-style: none; margin: 0 0 20px; padding: 0;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.creator-guide-step {
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.creator-guide-step-icon {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--highlight);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.creator-guide-step-body {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.creator-guide-step-body strong { font-size: 0.9rem; color: var(--text); }
+.creator-guide-step-body span   { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+.creator-guide-help-btn {
+  all: unset;
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.8rem; color: var(--accent);
+  cursor: pointer; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  padding: 4px 8px; border-radius: 6px;
+  border: 1.5px solid var(--accent);
+  align-self: center;
+}
