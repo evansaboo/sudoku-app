@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#1a1a2e"/>
+
+  <!-- Subtle grid backdrop -->
+  <rect x="60" y="60" width="510" height="510" rx="16" fill="#16213e" stroke="#4f46e5" stroke-width="3"/>
+
+  <!-- Mini sudoku grid lines -->
+  <!-- thin lines -->
+  <line x1="230" y1="60" x2="230" y2="570" stroke="#2d2d5e" stroke-width="1"/>
+  <line x1="400" y1="60" x2="400" y2="570" stroke="#2d2d5e" stroke-width="1"/>
+  <line x1="60" y1="230" x2="570" y2="230" stroke="#2d2d5e" stroke-width="1"/>
+  <line x1="60" y1="400" x2="570" y2="400" stroke="#2d2d5e" stroke-width="1"/>
+  <!-- thick box lines -->
+  <line x1="230" y1="60" x2="230" y2="570" stroke="#4f46e5" stroke-width="3"/>
+  <line x1="400" y1="60" x2="400" y2="570" stroke="#4f46e5" stroke-width="3"/>
+  <line x1="60" y1="230" x2="570" y2="230" stroke="#4f46e5" stroke-width="3"/>
+  <line x1="60" y1="400" x2="570" y2="400" stroke="#4f46e5" stroke-width="3"/>
+
+  <!-- Sample numbers scattered -->
+  <text x="105" y="165" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">5</text>
+  <text x="275" y="165" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#4f46e5">3</text>
+  <text x="445" y="165" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">7</text>
+  <text x="105" y="335" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#4f46e5">6</text>
+  <text x="275" y="335" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">8</text>
+  <text x="445" y="500" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#4f46e5">9</text>
+  <text x="105" y="500" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">4</text>
+  <text x="445" y="335" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">1</text>
+  <text x="275" y="500" font-family="system-ui,sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">2</text>
+
+  <!-- Right side: Title & description -->
+  <text x="660" y="220" font-family="system-ui,sans-serif" font-size="96" font-weight="800" fill="#ffffff">Sudoku</text>
+  <text x="660" y="290" font-family="system-ui,sans-serif" font-size="32" fill="#a5b4fc">Puzzle game in 6 number styles</text>
+  <text x="660" y="345" font-family="system-ui,sans-serif" font-size="28" fill="#94a3b8">English · العربية · Svenska</text>
+
+  <!-- Feature pills -->
+  <rect x="660" y="390" width="180" height="44" rx="22" fill="#4f46e5"/>
+  <text x="750" y="418" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" fill="#fff">Create &amp; Share</text>
+
+  <rect x="858" y="390" width="160" height="44" rx="22" fill="#7c3aed"/>
+  <text x="938" y="418" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" fill="#fff">3 Difficulty</text>
+
+  <rect x="660" y="448" width="160" height="44" rx="22" fill="#0f766e"/>
+  <text x="740" y="476" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" fill="#fff">Dark Mode</text>
+</svg>
