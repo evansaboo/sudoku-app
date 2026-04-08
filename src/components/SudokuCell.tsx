@@ -1,5 +1,5 @@
 import type { DisplayMode } from '../constants/numberMappings';
-import { toDisplay } from '../constants/numberMappings';
+import { toDisplay, isWordsMode } from '../constants/numberMappings';
 
 interface SudokuCellProps {
   value: number;
@@ -25,10 +25,11 @@ export default function SudokuCell({
     isError        ? 'cell--error'       : '',
   ].filter(Boolean).join(' ');
 
-  const needsSyriacFont = mode === 'syriac' || mode === 'words';
-  const style: React.CSSProperties = needsSyriacFont
-    ? { fontFamily: "'Noto Sans Syriac Eastern', serif" }
-    : {};
+  const needsSyriacFont = mode === 'syriac' || mode === 'words' || mode === 'saints-syr';
+  const style: React.CSSProperties = {
+    ...(needsSyriacFont ? { fontFamily: "'Noto Sans Syriac Eastern', serif" } : {}),
+    ...(mode === 'saints-ar' ? { direction: 'rtl' } : {}),
+  };
 
   const showNotes = !value && notes.size > 0;
 

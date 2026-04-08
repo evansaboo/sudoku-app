@@ -1,4 +1,5 @@
 import type { DisplayMode } from '../constants/numberMappings';
+import { isWordsMode } from '../constants/numberMappings';
 import SudokuCell from './SudokuCell';
 
 interface SudokuBoardProps {
@@ -47,7 +48,7 @@ export default function SudokuBoard({
   }
 
   return (
-    <div className={`board${mode === 'words' ? ' board--words' : ''}`}>
+    <div className={`board${isWordsMode(mode) ? ' board--words' : ''}`}>
       {puzzle.map((_, idx) => {
         const row = Math.floor(idx / 9);
         const col = idx % 9;

@@ -1,5 +1,5 @@
 import type { DisplayMode } from '../constants/numberMappings';
-import { toDisplay } from '../constants/numberMappings';
+import { toDisplay, isWordsMode } from '../constants/numberMappings';
 
 interface NumberPadProps {
   mode: DisplayMode;
@@ -15,12 +15,14 @@ export default function NumberPad({
   mode, selectedNumber, remaining, notesMode,
   showNotesToggle = true, onSelect, onToggleNotes,
 }: NumberPadProps) {
-  const needsSyriacFont = mode === 'syriac' || mode === 'words';
-  const isWords = mode === 'words';
+  const needsSyriacFont = mode === 'syriac' || isWordsMode(mode);
+  const isWords = isWordsMode(mode);
+  const needsArabicDir = mode === 'saints-ar';
 
-  const fontStyle: React.CSSProperties = needsSyriacFont
-    ? { fontFamily: "'Noto Sans Syriac Eastern', serif" }
-    : {};
+  const fontStyle: React.CSSProperties = {
+    ...(needsSyriacFont && mode !== 'saints-ar' ? { fontFamily: "'Noto Sans Syriac Eastern', serif" } : {}),
+    ...(needsArabicDir ? { direction: 'rtl' } : {}),
+  };
 
   return (
     <div className={`number-pad${isWords ? ' number-pad--words' : ''}`}>
