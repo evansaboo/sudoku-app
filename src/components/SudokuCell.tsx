@@ -26,10 +26,9 @@ export default function SudokuCell({
   ].filter(Boolean).join(' ');
 
   const needsSyriacFont = mode === 'syriac' || mode === 'words' || mode === 'saints-syr';
-  const style: React.CSSProperties = {
-    ...(needsSyriacFont ? { fontFamily: "'Noto Sans Syriac Eastern', serif" } : {}),
-    ...(mode === 'saints-ar' ? { direction: 'rtl' } : {}),
-  };
+  const style: React.CSSProperties = needsSyriacFont
+    ? { fontFamily: "'Noto Sans Syriac Eastern', serif" }
+    : {};
 
   const showNotes = !value && notes.size > 0;
 
